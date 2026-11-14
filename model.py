@@ -29,8 +29,28 @@ def edges_to_coo(edge_list, num_nodes=None):
 
     return src, dst, num_nodes
 
-# Step 2 - add_self_loops (not yet solved)
-# TODO: implement
+# Step 2 - add_self_loops
+def add_self_loops(src, dst, num_nodes):
+    """Append self-loop edges (i, i) for every node to COO edge indices.
+
+    Args:
+        src: LongTensor [E] source node indices.
+        dst: LongTensor [E] destination node indices.
+        num_nodes: int, number of nodes in the graph.
+
+    Returns:
+        src_out: LongTensor [E + num_nodes]
+        dst_out: LongTensor [E + num_nodes]
+    """
+    # TODO: Append self-loop edges (i, i) for every node to the COO tensors
+    loop_src = torch.arange(num_nodes, dtype=src.dtype, device=src.device)
+    loop_dst = torch.arange(num_nodes, dtype=dst.dtype, device=dst.device)
+
+    # 保留原始边，在末尾追加全部自环；已有自环也不去重
+    src_out = torch.cat([src, loop_src], dim=0)
+    dst_out = torch.cat([dst, loop_dst], dim=0)
+
+    return src_out, dst_out
 
 # Step 3 - compute_node_degrees (not yet solved)
 # TODO: implement
